@@ -1,0 +1,12 @@
+---
+- name: Restart PHP-FPM
+  systemd:
+    name: php7.1-fpm
+    state: reloaded
+    enabled: yes
+
+- name: Restart Nginx
+  systemd:
+    name: nginx
+    state: reloaded
+    enabled: yes

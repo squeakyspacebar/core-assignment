@@ -1,0 +1,29 @@
+<html>
+<head>
+    <title>News Articles</title>
+
+    <?php $this->assets->outputCss('header'); ?>
+</head>
+<body>
+    <table id="article-table" class="display">
+        <thead>
+            <td>ID</td>
+            <td>Headline</td>
+            <td>Outlet</td>
+            <td>Url</td>
+        </thead>
+	<tbody>
+            <?php foreach ($results as $result) { ?>
+            <tr>
+                <td><?php echo $result['id']; ?></td>
+                <td><?php echo $result['headline']; ?></td>
+                <td><?php echo $result['outlet']; ?></td>
+                <td><?php echo $result['url']; ?></td>
+            </tr>
+            <?php } ?>
+	</tbody>
+    </table>
+
+    <?php $this->assets->outputJs('footer'); ?>
+</body>
+</html>

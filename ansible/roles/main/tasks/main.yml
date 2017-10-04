@@ -1,0 +1,49 @@
+---
+- name: Run Phalcon repository installation script.
+  script: script.deb.sh
+
+- name: Add PHP 7.1 PPA.
+  apt_repository:
+    repo: 'ppa:ondrej/php'
+
+- name: Install system packages.
+  apt:
+    name: "{{ item }}"
+    update_cache: yes
+  with_items:
+    - git
+    - nginx
+    - php7.1
+    - php7.1-cli
+    - php7.1-fpm
+    - php7.1-sqlite3
+    - php7.1-phalcon
+    - sqlite3
+    - libsqlite3-dev
+    - gettext
+    - libpcre3-dev
+    - openssl
+
+- name: Add Nginx configuration.
+  copy:
+    src: default
+    dest: /etc/nginx/sites-available
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Add site to Nginx sites-enabled.
+  file:
+    src: /etc/nginx/sites-available/default
+    dest: /etc/nginx/sites-enabled/default
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Set up database.
+  shell: sqlite3 database.sqlite3 << db.sql
+  args:
+    chdir: /vagrant/
+  notify:
+    - Restart PHP-FPM
+    - Restart Nginx
